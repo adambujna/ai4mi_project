@@ -151,17 +151,29 @@ $ mv data/SEGTHOR_tmp data/SEGTHOR
 Running a training
 ```
 $ python main.py --help
-usage: main.py [-h] [--epochs EPOCHS] [--dataset {TOY2,SEGTHOR}] [--mode {partial,full}] --dest DEST [--gpu] [--debug]
+usage: main.py [-h] [--epochs EPOCHS] [--dataset {TOY2,SEGTHOR}] [--mode {partial,full}] [--loss {CE,Dice,DiceCE,DiceTopK,DiceFocal}] --dest DEST [--gpu] [--debug]
 
 options:
   -h, --help            show this help message and exit
   --epochs EPOCHS
   --dataset {TOY2,SEGTHOR}
   --mode {partial,full}
+  --loss {CE,Dice,DiceCE,DiceTopK,DiceFocal}
   --dest DEST           Destination directory to save the results (predictions and weights).
   --gpu
   --debug               Keep only a fraction (10 samples) of the datasets, to test the logic around epochs and logging easily.
-$ python main.py --dataset TOY2 --mode full --epoch 25 --dest results/toy2/ce --gpu
+$ python main.py --dataset TOY2 --mode full --epochs 25 --dest results/toy2/ce --gpu
+
+$ python main.py --dataset TOY2 --mode full --loss Dice --epochs 25 --dest results/toy2/dice --gpu
+
+$ python main.py --dataset SEGTHOR --mode full --loss Dice --epochs 25 --dest results/SEGTHOR/dice --gpu
+
+$ python main.py --dataset SEGTHOR --mode full --loss DiceCE --epochs 25 --dest results/SEGTHOR/DiceCE --gpu
+
+$ python main.py --dataset SEGTHOR --mode full --loss DiceTopK --epochs 25 --dest results/SEGTHOR/DiceTopK --gpu
+
+$ python main.py --dataset SEGTHOR --mode full --loss DiceFocal --epochs 25 --dest results/SEGTHOR/DiceFocal --gpu
+
 ```
 
 The codebase uses a lot of assertions for control and self-documentation, they can easily be disabled with the `-O` option (for faster training) once everything is known to be correct (for instance run the previous command for 1/2 epochs, then kill it and relaunch it):
